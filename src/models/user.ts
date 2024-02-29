@@ -9,7 +9,7 @@ export interface IUser {
     email: string;
     password: string;
     profile?: string;
-    role: 'admin' | 'author' | 'reader'; 
+    role?: 'admin' | 'author' | 'reader'; 
 }
 
 // Define the Mongoose schema for the User model
@@ -17,8 +17,8 @@ const userSchema: Schema<IUser> = new Schema<IUser>({
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    profile: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'author', 'reader'], required: true } // Change to 'Role' enum if using string values in Role enum
+    profile: { type: String},
+    role: { type: String, enum: ['admin', 'author', 'reader'], default : "reader",  } 
 });
 
 userSchema.pre("save", async function () {
@@ -35,7 +35,7 @@ export const validateUserObject = (user: IUser) => {
         email: Joi.string().email().required(),
         password: Joi.string().required(),
         profile: Joi.string().optional(),
-        role: Joi.string().required()
+        role: Joi.string().required().optional(),
     });
 
     return schema.validate(user);
