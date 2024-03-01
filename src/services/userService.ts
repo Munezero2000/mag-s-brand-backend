@@ -2,7 +2,11 @@ import { IUser, User } from "../models/user";
 
 export default class UserService {
     // a method to create new user
-    static async createUser(username: string, email: string, password: string, role?: string) {
+    static async createUser(
+        username: string,
+        email: string,
+        password: string,
+        role?: string) {
         try {
             if (!username || !email || !password) {
                 throw new Error("Invalid user data");
@@ -26,11 +30,24 @@ export default class UserService {
         }
 
     }
-
-    static async findUserByIdAndUpdate(id:string, theUser: IUser) {
+     // a method to update user information
+    static async findUserByIdAndUpdate(id: string, theUser: IUser) {
         try {
             const user = await User.findByIdAndUpdate(
-                id, theUser, {new : true}
+                id, theUser, { new: true }
+            );
+            return user
+        } catch (e) {
+            console.log(e)
+            return null
+        }
+
+    }
+    
+    // a method to delete user
+    static async findUserByIdAndDelete(id: string) {
+        try {
+            const user = await User.findByIdAndDelete(id
             );
             return user
         } catch (e) {
