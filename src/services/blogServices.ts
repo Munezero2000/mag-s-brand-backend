@@ -7,13 +7,14 @@ export default class BlogService {
         content: string,
         author: string,
         category?: string,
-        status?: string
+        status?: string,
+        thumbnail?:string
     ) {
         try {
             if (!title || !content || !author) {
                 throw new Error("Invalid blog data");
             }
-            const blog = new Blog({ title, content, author, category, status });
+            const blog = new Blog({ title, content, author, category, status, thumbnail});
             return await blog.save();
         } catch (error) {
             console.log("Error creating blog: ", error)

@@ -2,11 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import userRoutes from './src/routes/userRoutes';
+import blogRoutes from './src/routes/blogRoutes';
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use('/api/users', userRoutes);
+app.use('/api/blog', blogRoutes);
 
 const { mongo_url, PORT } = process.env;
 

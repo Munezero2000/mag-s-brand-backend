@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
             return;
         }
 
-        const { title, content, author, category, status } = req.body;
+        const { title, content, author, category, status, thumbnail } = req.body;
         // Save the blog to the database
         const blog: IBlog | null = await BlogService.createBlog(title, content, author, category, status);
         if (!blog) {
@@ -94,6 +94,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+// a route to delete blogs
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
