@@ -1,0 +1,1 @@
+enum Category {"techonology",  "sports", "entertainment", "health", "business", "education"};
