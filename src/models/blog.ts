@@ -10,7 +10,7 @@ export interface IBlog {
   author: User["_id"];
   likes?: User["_id"][];
   comments?: string[];
-  category?: Category;
+  category?: string;
   status?: string,
   thumbnail?: string,
   dateCreated?: Date;
@@ -22,7 +22,7 @@ const blogSchema: Schema<IBlog> = new Schema<IBlog>({
   title: { type: String, required: true, minlength: 5 },
   content: { type: String, required: true, minlength: 50 },
   author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  category: { type: String, enum: ["techonology", "sports", "entertainment", "health", "business", "education"], required: true },
+  category: { type: String, enum: ["technology", "sports", "entertainment", "health", "business", "education"], required: true },
   thumbnail: {type: String, default:""},
   status: { type: String, enum: ["published", "archived"], default: "published" },
   likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -39,10 +39,11 @@ export const validateBlogObject = (blog: IBlog) => {
     title: Joi.string().min(3).required(),
     content: Joi.string().min(50).required(),
     author: Joi.string().required(),
+    category: Joi.string().required(),
     likes: Joi.array().items(Joi.string()),
     comments: Joi.array().items(Joi.string()),
-    dateCreated: Joi.date().optional(),
-    dateUpdated: Joi.date().optional(),
+    status:Joi.string().optional(),
+    thumbnail:Joi.string().optional(),
   });
 
   return schema.validate(blog);

@@ -26,6 +26,8 @@ const userSchema: Schema<IUser> = new Schema<IUser>({
   password: { type: String, required: true },
   profile: { type: String, default: "" },
   role: { type: String, enum: ['admin', 'author', 'reader'], default: "reader", }
+},{
+  timestamps: true
 });
 
 userSchema.pre("save", async function () {
@@ -33,7 +35,7 @@ userSchema.pre("save", async function () {
 });
 
 // a method to generate token when user after authentication
-userSchema.methods.generateAuthToken = function (this: any, id: string) {
+export function generateAuthToken (id: string) {
   if (!process.env.SECRET_KEY) {
     throw new Error('SECRET_KEY environment variable not set');
   }
@@ -58,3 +60,11 @@ export const validateUserObject = (user: IUser) => {
 
   return schema.validate(user);
 };
+
+export function validateSignIn(user:IUser) {
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(5).max(255).required(),
+  });
+  return schema.validate(user);
+}

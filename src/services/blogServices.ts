@@ -25,7 +25,7 @@ export default class BlogService {
     // Method to get all blog posts
     static async getAllBlogs() {
         try {
-            const blogs = await Blog.find();
+            const blogs = await Blog.find().populate({path:"author", select:"profile username email"});
             return blogs;
         } catch (error) {
             console.log("Error getting blogs: ", error)
@@ -36,7 +36,7 @@ export default class BlogService {
     // Method to get a blog post by ID
     static async getBlogById(id: string) {
         try {
-            const blog = await Blog.findById(id);
+            const blog = await Blog.findById(id).populate({path:"author", select:"profile username email"});;
             return blog;
         } catch (error) {
             console.log("Error getting blog by ID: ", error)

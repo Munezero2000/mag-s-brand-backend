@@ -22,7 +22,7 @@ export default class UserService {
     // a method to get all users
     static async findUserByEmail(email: string) {
         try {
-            const user = await User.find({ email });
+            const user = await User.findOne({ email });
             return user
         } catch (e) {
             console.log(e)
