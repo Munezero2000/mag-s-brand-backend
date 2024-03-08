@@ -7,13 +7,13 @@ import  {Router} from "express";
 const router = Router();
 
 // Route for getting getting all user
-router.get('/', [auth, admin], UserController.getUsers);
+router.get('/',[auth, admin], UserController.getUsers);
 
 // Route for creating new user
 router.post("/", UserController.registerUser);
 
 // a route for getting the user  by id
-router.get('/:id', auth, UserController.getUserById)
+router.get('/:id', UserController.getUserById)
 
 router.put('/:id', auth, UserController.updateUserInfo);
 

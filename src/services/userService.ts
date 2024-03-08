@@ -1,3 +1,4 @@
+import { promises } from "dns";
 import { IUser, User } from "../models/user";
 
 export default class UserService {
@@ -57,9 +58,9 @@ export default class UserService {
 
     }
 
-    static async findUserById(id: string) {
+    static async findUserById(id: string):Promise<IUser|null> {
         try {
-            const user = await User.findById(id);
+            const user: IUser|null = await User.findById(id);
             return user
         } catch (e) {
             console.log(e)
@@ -68,7 +69,7 @@ export default class UserService {
 
     }
 
-    static async getAllUsers() {
+    static async getAllUsers():Promise<IUser[]|null> {
         try {
             const users = await User.find().select("-password");
             return users

@@ -24,7 +24,6 @@ function auth(req: Request, res: Response, next: NextFunction) {
         // Verify the token
         const decoded = jwt.verify(token, secretKey) as { id: IUser['_id'] };
         req.user = decoded.id;
-        console.log(decoded.id);
         next();
     } catch (e) {
         console.error(e);

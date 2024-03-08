@@ -1,13 +1,14 @@
 import express, {Request, Response} from "express";
 import { validateUserObject, IUser } from "../models/user";
 import UserService from "../services/userService";
+import mongoose from "mongoose";
 
 export default class UserController{
     static async getUsers (req:Request, res:Response) {
         try {
             const users:IUser[] | null = await UserService.getAllUsers();
             if (!users) {
-                res.status(400).send("No users found");
+                res.status(404).send("No users found");
                 return;
             }
             res.status(200).send({ usersCount: users.length, users: users });
@@ -50,14 +51,14 @@ export default class UserController{
     static async getUserById(req:Request, res:Response)  {
         const { id } = req.params;
         try {
-            if (!id) {
+            if (!id || !mongoose.isValidObjectId(id)) {
                 res.status(400).send("an user id is required");
                 return;
             }
     
             const user = await UserService.findUserById(id);
             if (!user) {
-                res.status(400).send("user not found");
+                res.status(404).send("user not found");
                 return;
             }
             res.status(200).send(user);
@@ -70,10 +71,9 @@ export default class UserController{
     static async updateUserInfo (req:Request, res:Response) {
         const { id } = req.params;
         try {
-    
             // checking if the id is given
-            if (!id) {
-                res.status(400).send("a user id is required");
+            if (!id || !mongoose.isValidObjectId(id)) {
+                res.status(400).send("a valid user id is required");
                 return;
             }
             // validating new user information
@@ -89,7 +89,7 @@ export default class UserController{
             // updating the user if the id is valid and 
             const updatedUser = await UserService.findUserByIdAndUpdate(id, theUser);
             if (!updatedUser) {
-                res.status(400).send("user not found");
+                res.status(404).send("user not found");
                 return;
             }
             res.status(200).send(updatedUser);
@@ -103,14 +103,14 @@ export default class UserController{
         const { id } = req.params;
         try {
             // checking if the id is given
-            if (!id) {
+            if (!id || !mongoose.isValidObjectId(id)) {
                 res.status(400).send("a user id is required");
                 return;
             }
             // Deleting the user from the database
             const deletedUser = await UserService.findUserByIdAndDelete(id);
             if (!deletedUser) {
-                res.status(400).send("user not found");
+                res.status(404).send("user not found");
                 return;
             }
             res.status(200).send({ message: "User had been deleted successfully", data: deletedUser });
