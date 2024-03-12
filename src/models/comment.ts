@@ -9,13 +9,15 @@ export interface IComment {
     blog: Blog["_id"];
     content: string;
     dateCreated?: Date;
+    dateUpdated?: Date;
 }
 
 const commentSchema: Schema<IComment> = new Schema<IComment>({
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     blog: { type: Schema.Types.ObjectId, ref: 'Blog', required: true },
     content: { type: String, required: true },
-    dateCreated: { type: Date, default: Date.now }
+}, {
+    timestamps: true
 });
 
 export const Comment = model<IComment>('Comment', commentSchema);
@@ -23,7 +25,6 @@ export const Comment = model<IComment>('Comment', commentSchema);
 export const validateCommentObject = (comment: IComment) => {
     const schema = Joi.object({
         author: Joi.string().required(),
-        blog: Joi.string().optional(),
         content: Joi.string().required().min(9)
     });
 

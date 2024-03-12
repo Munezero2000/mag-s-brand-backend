@@ -7,6 +7,7 @@ export default class UserController{
     static async getUsers (req:Request, res:Response) {
         try {
             const users:IUser[] | null = await UserService.getAllUsers();
+
             if (!users) {
                 res.status(404).send("No users found");
                 return;
@@ -25,7 +26,7 @@ export default class UserController{
                 res.status(400).send(error.details[0].message); // Return error message if validation fails
                 return;
             }
-    
+            let profile = req.file?.path  || 'defaultProfile.png'; 
             const { username, email, password, role } = req.body;
             // check if email has been used
             const theUser = await UserService.findUserByEmail(email);
@@ -34,7 +35,7 @@ export default class UserController{
                 return;
             }
             // save the user to the database
-            const user: IUser | null = await UserService.createUser(username, email, password, role);
+            const user: IUser | null = await UserService.createUser(username, email, password, role, profile);
             if (!user) {
                 res.status(400).send({ message: "Account not created" });
                 return;
@@ -83,7 +84,8 @@ export default class UserController{
                 return;
             }
             // getting the new information
-            const { username, email, password, role, profile } = req.body
+            let profile = req.file?.path  || 'defaultProfile.png'; 
+            const { username, email, password, role} = req.body
             const theUser: IUser = { username, email, password, role, profile };
     
             // updating the user if the id is valid and 

@@ -1,20 +1,22 @@
 import express from 'express';
 import MessageController from '../controllers/messageController';
+import auth from '../middlewares/auth';
+import admin from '../middlewares/admin';
 const router = express.Router();
 
 // Create a new message
-router.post('/messages', MessageController.createMessage);
+router.post('/', MessageController.createMessage);
 
 // Retrieve all messages
-router.get('/messages', MessageController.getAllMessages);
+router.get('/',[auth, admin], MessageController.getAllMessages);
 
 // Retrieve a single message by ID
-router.get('/messages/:id', MessageController.getMessageById);
+router.get('/:id',[auth, admin], MessageController.getMessageById);
 
 // Update a message
-router.put('/messages/:id', MessageController.updateMessage);
+router.put('/:id',[auth, admin], MessageController.updateMessage);
 
 // Delete a message
-router.delete('/messages/:id', MessageController.deleteMessage);
+router.delete('/messages/:id',[auth, admin], MessageController.deleteMessage);
 
 export default router;

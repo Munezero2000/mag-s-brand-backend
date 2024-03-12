@@ -4,15 +4,14 @@ export default class CommentService {
     // Method to create a new comment
     static async createComment(
         blog: string,
-        user: string,
         author: string,
         content: string
     ) {
         try {
-            if (!author || !content || !blog || !user) {
+            if (!author || !content || !blog) {
                 throw new Error("Invalid comment data");
             }
-            const comment = new Comment({ author, blog, user, content });
+            const comment = new Comment({ author, blog, content });
             return await comment.save();
         } catch (error) {
             console.log("Error creating comment: ", error)
