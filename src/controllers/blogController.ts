@@ -38,7 +38,7 @@ export default class BlogController {
                 return;
             }
 
-            let thumbnail = req.file?.path || "";
+            let thumbnail = req.file?.filename || "";
             const { title, content, author, category, status,} = req.body;
 
             // Save the blog to the database

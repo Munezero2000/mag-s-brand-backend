@@ -2,7 +2,7 @@ import multer from 'multer';
 import path from 'path'
 
 const storage = multer.diskStorage({
-    destination: "./upload",
+    destination: "./uploads",
     filename: (req, file, callback) => {
       return callback(
         null,
