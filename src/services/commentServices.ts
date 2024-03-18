@@ -1,18 +1,13 @@
+import mongoose from "mongoose";
 import { IComment, Comment } from "../models/comment";
+
 
 export default class CommentService {
     // Method to create a new comment
-    static async createComment(
-        blog: string,
-        author: string,
-        content: string
-    ) {
+    static async createComment(comment: IComment) {
         try {
-            if (!author || !content || !blog) {
-                throw new Error("Invalid comment data");
-            }
-            const comment = new Comment({ author, blog, content });
-            return await comment.save();
+            const commentObj = new Comment(comment);
+            return await commentObj.save();
         } catch (error) {
             console.log("Error creating comment: ", error)
             return null;
@@ -42,15 +37,17 @@ export default class CommentService {
     }
 
     // Method to get a comment by blog ID
-    static async getCommentByBlogId(blogId: string) {
+    static async getCommentByBlogId(blogId: string): Promise<Comment[] | null> {
         try {
-            const blogComments = await Comment.find({ blog: blogId });
-            return blogComments;
+            const comments: Comment[] | null = await Comment.find({ blog: new mongoose.Types.ObjectId(blogId) }).populate({ path: 'author', select:"username profile" });
+            console.log(comments);
+            return comments;
         } catch (error) {
-            console.log("Error getting comment by ID: ", error)
+            console.error("Error getting comments by blog ID:", error); // Use console.error for errors
             return null;
         }
     }
+
 
     // method to get user comments on a blog
     static async getCommentByBlogIdAndUserId(blogId: string, userId: string) {

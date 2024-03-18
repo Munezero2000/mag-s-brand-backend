@@ -18,6 +18,6 @@ router.post("/", [auth, admin, upload.single("thumbnail")], BlogController.creat
 router.put('/:id', [auth, admin,  upload.single("thumbnail")], BlogController.updateBlog)
 
 // a route to delete blogs
-router.delete('/:id', [auth, admin], BlogController.updateBlog)
+router.delete('/:id', [auth, admin], BlogController.deleteBlog)
 
 export default router;

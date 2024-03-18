@@ -17,6 +17,6 @@ router.get('/:id',[auth, admin], MessageController.getMessageById);
 router.put('/:id',[auth, admin], MessageController.updateMessage);
 
 // Delete a message
-router.delete('/messages/:id',[auth, admin], MessageController.deleteMessage);
+router.delete('/:id',[auth, admin], MessageController.deleteMessage);
 
 export default router;

@@ -58,10 +58,10 @@ export default class MessageController {
             const messageId = req.params.id;
             const deletedMessage = await MessageService.deleteMessage(messageId);
             if (!deletedMessage) {
-                res.status(404).json({ message: 'Message not found' });
+                res.status(404).send({ message: 'Message not found' });
                 return;
             }
-            res.json(deletedMessage);
+            res.status(200).send({message:"Message deleted successfully"});
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }

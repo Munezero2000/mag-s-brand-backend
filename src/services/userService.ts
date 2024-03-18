@@ -61,7 +61,7 @@ export default class UserService {
 
     static async findUserById(id: string): Promise<IUser | null> {
         try {
-            const user: IUser | null = await User.findById(id);
+            const user = await User.findById(id);
             return user
         } catch (e) {
             console.log(e)

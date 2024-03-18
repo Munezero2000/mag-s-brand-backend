@@ -9,8 +9,8 @@ dotenv.config();
 //User interface 
 export interface IUser {
   _id?: string;
-  username: string;
-  email: string;
+  username?: string;
+  email?: string;
   password: string;
   profile?: string;
   role?: 'admin' | 'author' | 'reader';
@@ -30,6 +30,7 @@ const userSchema: Schema<IUser> = new Schema<IUser>({
 userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 12);
 });
+
 
 // a method to generate token when user after authentication
 export function generateAuthToken (id: string) {

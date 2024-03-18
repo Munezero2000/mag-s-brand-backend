@@ -25,6 +25,7 @@ export const Comment = model<IComment>('Comment', commentSchema);
 export const validateCommentObject = (comment: IComment) => {
     const schema = Joi.object({
         author: Joi.string().required(),
+        blog: Joi.string().required(),
         content: Joi.string().required().min(9)
     });
 

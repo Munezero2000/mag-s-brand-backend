@@ -68,7 +68,7 @@ export default class BlogController {
                 res.status(400).send(error.details[0].message);
                 return;
             }
-            let thumbnail = req.file?.path || "";
+            let thumbnail = req.file?.filename || "";
             const { title, content, author, category, status,  } = req.body;
             const updatedBlog: IBlog = { title, content, author, category, status, thumbnail };
 
