@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express";
 import { validateUserObject, IUser } from "../models/user";
+import bcrypt from 'bcrypt';
 import UserService from "../services/userService";
 import mongoose from "mongoose";
 
@@ -77,15 +78,11 @@ export default class UserController{
                 res.status(400).send("a valid user id is required");
                 return;
             }
-            // validating new user information
-            const { error } = validateUserObject(req.body);
-            if (error) {
-                res.status(400).send(error.details[0].message); // Return error message if validation fails
-                return;
+            let profile = req.file?.filename  || 'defaultProfile.png'; 
+            let { username, email, password, role} = req.body
+            if (password) {
+                password = await bcrypt.hash(password, 12);
             }
-            // getting the new information
-            let profile = req.file?.path  || 'defaultProfile.png'; 
-            const { username, email, password, role} = req.body
             const theUser: IUser = { username, email, password, role, profile };
     
             // updating the user if the id is valid and 

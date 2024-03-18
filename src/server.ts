@@ -10,6 +10,7 @@ import * as swaggerui from "swagger-ui-express"
 import userRoutes from './routes/userRoutes';
 import blogRoutes from './routes/blogRoutes';
 import authRoutes from './routes/authRoutes';
+import subsribeRoutes from "./routes/subsribeRoutes";
 import commentRoutes from './routes/commentRoutes';
 import messageRoutes from './routes/messgeRoutes';
 import swaggerdocs from "./docs/swaggerdocs";
@@ -24,7 +25,7 @@ import swaggerdocs from "./docs/swaggerdocs";
   app.use(express.json());
   app.use(morgan('dev'));
   app.use(cors())
-  app.use('/uploads', express.static('uploads'));
+ 
  
 
 app.use('/api/users', userRoutes);
@@ -32,7 +33,9 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/messages', messageRoutes);
+app.use("api/subscribe", subsribeRoutes);
 app.use("/api/docs", swaggerui.serve, swaggerui.setup(swaggerdocs))
+app.use('/uploads', express.static('uploads'));
 
 
 

@@ -11,10 +11,8 @@ export default class CommentController {
                 return;
             }
 
-            const { author, content,} = req.body;
-            const blogId = req.params.blogId;
-            // keeping the comment on the specified blog
-            const comment = await CommentService.createComment(author, blogId, content);
+            const {author, blog, content} = req.body;
+            const comment = await CommentService.createComment(req.body);
             if (!comment) {
                 res.status(400).send("Comment not created");
                 return;

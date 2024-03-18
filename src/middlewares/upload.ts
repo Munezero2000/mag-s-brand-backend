@@ -12,6 +12,8 @@ const storage = multer.diskStorage({
   });
 
   const upload = multer({ storage: storage });
+
+  // Handling Multer errors
   export function errorHandle(err: { message: any; }, req: any, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { ok: boolean; message: string; }): void; new(): any; }; }; }, next: any) {
     if (err instanceof multer.MulterError) {
       res.status(400).json({ ok: false, message: err.message });

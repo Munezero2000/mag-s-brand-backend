@@ -7,10 +7,10 @@ import CommentController from "../controllers/commentController";
 const router = express.Router();
 
 // Route for creating a new comment on a specific blog
-router.post("/:blogId", auth, CommentController.createComment);
+router.post("/", auth, CommentController.createComment);
 
 // Route for getting all comments on a specific blog
-router.get('/:blogId', auth, CommentController.getBlogComments);
+router.get('/:blogId', CommentController.getBlogComments);
 
 // Route for getting a comment by ID on a specific blog
 router.get('/:blogId/:commentId', auth, CommentController.getBlogCommentById);
