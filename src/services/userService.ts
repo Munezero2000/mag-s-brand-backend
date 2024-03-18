@@ -1,3 +1,4 @@
+import { promises } from "dns";
 import { IUser, User } from "../models/user";
 
 export default class UserService {
@@ -6,12 +7,13 @@ export default class UserService {
         username: string,
         email: string,
         password: string,
-        role?: string) {
+        role?: string,
+        profile?: string) {
         try {
             if (!username || !email || !password) {
                 throw new Error("Invalid user data");
             }
-            const user = new User({ username, email, password, role });
+            const user = new User({ username, email, password, role, profile });
             return await user.save();
         } catch (error) {
             console.log("Error creating blog: ", error)
@@ -30,7 +32,7 @@ export default class UserService {
         }
 
     }
-     // a method to update user information
+    // a method to update user information
     static async findUserByIdAndUpdate(id: string, theUser: IUser) {
         try {
             const user = await User.findByIdAndUpdate(
@@ -43,7 +45,7 @@ export default class UserService {
         }
 
     }
-    
+
     // a method to delete user
     static async findUserByIdAndDelete(id: string) {
         try {
@@ -57,9 +59,9 @@ export default class UserService {
 
     }
 
-    static async findUserById(id: string) {
+    static async findUserById(id: string): Promise<IUser | null> {
         try {
-            const user = await User.findById(id);
+            const user: IUser | null = await User.findById(id);
             return user
         } catch (e) {
             console.log(e)
@@ -68,7 +70,7 @@ export default class UserService {
 
     }
 
-    static async getAllUsers() {
+    static async getAllUsers(): Promise<IUser[] | null> {
         try {
             const users = await User.find().select("-password");
             return users

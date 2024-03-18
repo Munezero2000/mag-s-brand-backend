@@ -4,7 +4,6 @@ import UserService from "../services/userService";
 async function admin(req: Request, res: Response, next: NextFunction) {
     try {
         const user = await UserService.findUserById(req.user!);
-        console.log(req.user)
         if (user && user.role === 'admin') {
             next();
         } else {
@@ -15,4 +14,4 @@ async function admin(req: Request, res: Response, next: NextFunction) {
         return res.status(500).send("Internal Server Error");
     }
 }
-export default  admin;
+export default admin;

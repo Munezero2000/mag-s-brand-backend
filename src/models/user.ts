@@ -5,9 +5,6 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 dotenv.config();
 
-interface IUserSchemaMethods {
-  generateAuthToken(id: string): string;
-}
 
 //User interface 
 export interface IUser {
@@ -21,11 +18,11 @@ export interface IUser {
 
 // Mongoose  schema for user with validation rules and methods
 const userSchema: Schema<IUser> = new Schema<IUser>({
-  username: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
+  username: { type: String, minlength:3, maxlength:255, required: true },
+  email: { type: String, maxlength:100, required: true },
+  password: { type: String, minlength: 8, maxlength:255, required: true },
   profile: { type: String, default: "" },
-  role: { type: String, enum: ['admin', 'author', 'reader'], default: "reader", }
+  role: { type: String, enum: ['admin', 'author', 'reader'], maxlength:20, default: "reader", }
 },{
   timestamps: true
 });
@@ -51,11 +48,11 @@ export const User = model<IUser>('User', userSchema);
 //  function to validate user object from request body
 export const validateUserObject = (user: IUser) => {
   const schema = Joi.object({
-    username: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    username: Joi.string().min(3).max(255).required(),
+    email: Joi.string().email().max(100).required(),
+    password: Joi.string().min(5).max(255).required(),
     profile: Joi.string().optional(),
-    role: Joi.string().required().optional(),
+    role: Joi.string().max(20).optional(),
   });
 
   return schema.validate(user);

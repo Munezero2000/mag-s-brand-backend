@@ -6,9 +6,9 @@ export default class MessageController {
     static async createMessage(req: Request, res: Response): Promise<void> {
         try {
             const message = await MessageService.createMessage(req.body);
-            res.json(message);
+            res.status(201).send({message:"Thank you for contacting me!"});
         } catch (error: any) {
-            res.status(400).json({ error: error.message });
+            res.status(400).send({ error: error.message });
         }
     }
 

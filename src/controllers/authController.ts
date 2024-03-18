@@ -17,8 +17,9 @@ export default class AuthController{
         if (!validPassword) return res.status(400).send("Invalid password");
       
         const token = generateAuthToken(user._id!);
+        res.header("Access-Control-Expose-Headers", "x-auth-token");
         res
           .header("x-auth-token", token)
-          .send({ _id: user._id, name: user.username, email: user.email });
+          .send({ _id: user._id, name: user.username, email: user.email, role: user.role });
       }
 }
