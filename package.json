@@ -2,11 +2,12 @@
   "name": "mag-s-brand-backend",
   "version": "1.0.0",
   "description": "\"my blog and portfolio api\"",
-  "main": "server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
-    "test": "jest --forceExit --verbose --coverage"
+    "test": "jest --forceExit --verbose --coverage",
+    "build":"tsc"
   },
   "repository": {
     "type": "git",
