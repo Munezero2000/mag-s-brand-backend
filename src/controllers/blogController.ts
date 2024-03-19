@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { validateBlogObject, IBlog } from "../models/blog";
 import BlogService from "../services/blogServices";
+import cloudinary from '../cloudinary.config';
 
 
 export default class BlogController {
@@ -38,7 +39,9 @@ export default class BlogController {
                 return;
             }
 
-            let thumbnail = req.file?.filename || "";
+            const uploadResult = await cloudinary.uploader.upload(req.file?.path!);
+
+            let thumbnail = uploadResult.secure_url || "default";
             const { title, content, author, category, status,} = req.body;
 
             // Save the blog to the database
@@ -68,7 +71,10 @@ export default class BlogController {
                 res.status(400).send(error.details[0].message);
                 return;
             }
-            let thumbnail = req.file?.filename || "";
+            
+            const uploadResult = await cloudinary.uploader.upload(req.file?.path!);
+            let thumbnail = uploadResult.secure_url || "default";
+            
             const { title, content, author, category, status,  } = req.body;
             const updatedBlog: IBlog = { title, content, author, category, status, thumbnail };
 

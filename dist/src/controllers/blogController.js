@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const blog_1 = require("../models/blog");
 const blogServices_1 = __importDefault(require("../services/blogServices"));
+const cloudinary_config_1 = __importDefault(require("../cloudinary.config"));
 class BlogController {
     static gettAllBogs(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -54,7 +55,8 @@ class BlogController {
                     res.status(400).send(error.details[0].message); // Return error message if validation fails
                     return;
                 }
-                let thumbnail = ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) || "";
+                const uploadResult = yield cloudinary_config_1.default.uploader.upload((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+                let thumbnail = uploadResult.secure_url || "default";
                 const { title, content, author, category, status, } = req.body;
                 // Save the blog to the database
                 const blog = yield blogServices_1.default.createBlog(title, content, author, category, status, thumbnail);
@@ -85,7 +87,8 @@ class BlogController {
                     res.status(400).send(error.details[0].message);
                     return;
                 }
-                let thumbnail = ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) || "";
+                const uploadResult = yield cloudinary_config_1.default.uploader.upload((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+                let thumbnail = uploadResult.secure_url || "default";
                 const { title, content, author, category, status, } = req.body;
                 const updatedBlog = { title, content, author, category, status, thumbnail };
                 const updatedBlogResult = yield blogServices_1.default.updateBlogById(id, updatedBlog);

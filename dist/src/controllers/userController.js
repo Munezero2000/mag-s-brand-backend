@@ -16,6 +16,7 @@ const user_1 = require("../models/user");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const userService_1 = __importDefault(require("../services/userService"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const cloudinary_config_1 = __importDefault(require("../cloudinary.config"));
 class UserController {
     static getUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -96,7 +97,8 @@ class UserController {
                     res.status(400).send("a valid user id is required");
                     return;
                 }
-                let profile = ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) || 'defaultProfile.png';
+                const uploadResult = yield cloudinary_config_1.default.uploader.upload((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+                let profile = uploadResult.secure_url || "defaultProfile";
                 let { username, email, password, role } = req.body;
                 if (password) {
                     password = yield bcrypt_1.default.hash(password, 12);

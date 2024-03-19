@@ -7,7 +7,7 @@
     "start": "node dist/index.js",
     "dev": "nodemon src/server.ts",
     "test": "jest --forceExit --verbose --coverage",
-    "build":"tsc"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "@types/multer": "^1.4.11",
     "async-handler-express": "^0.2.4",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",

@@ -1,13 +1,14 @@
-import express, {Request, Response} from "express";
+import express, { Request, Response } from "express";
 import { validateUserObject, IUser } from "../models/user";
 import bcrypt from 'bcrypt';
 import UserService from "../services/userService";
 import mongoose from "mongoose";
+import cloudinary from "../cloudinary.config";
 
-export default class UserController{
-    static async getUsers (req:Request, res:Response) {
+export default class UserController {
+    static async getUsers(req: Request, res: Response) {
         try {
-            const users:IUser[] | null = await UserService.getAllUsers();
+            const users: IUser[] | null = await UserService.getAllUsers();
 
             if (!users) {
                 res.status(404).send("No users found");
@@ -20,19 +21,19 @@ export default class UserController{
         }
     }
 
-    static async registerUser (req:Request, res:Response){
+    static async registerUser(req: Request, res: Response) {
         try {
             const { error } = validateUserObject(req.body);
             if (error) {
                 res.status(400).send(error.details[0].message); // Return error message if validation fails
                 return;
             }
-            let profile = req.file?.path  || 'defaultProfile.png'; 
+            let profile = req.file?.path || 'defaultProfile.png';
             const { username, email, password, role } = req.body;
             // check if email has been used
             const theUser = await UserService.findUserByEmail(email);
             if (theUser) {
-                res.status(400).send({ message: "Email has been taken"});
+                res.status(400).send({ message: "Email has been taken" });
                 return;
             }
             // save the user to the database
@@ -41,7 +42,7 @@ export default class UserController{
                 res.status(400).send({ message: "Account not created" });
                 return;
             }
-    
+
             // Send the created user object back
             res.status(201).send({ message: "Account created successfully", createdUser: user });
         } catch (error) {
@@ -50,14 +51,14 @@ export default class UserController{
         }
     }
 
-    static async getUserById(req:Request, res:Response)  {
+    static async getUserById(req: Request, res: Response) {
         const { id } = req.params;
         try {
             if (!id || !mongoose.isValidObjectId(id)) {
                 res.status(400).send("an user id is required");
                 return;
             }
-    
+
             const user = await UserService.findUserById(id);
             if (!user) {
                 res.status(404).send("user not found");
@@ -70,7 +71,7 @@ export default class UserController{
         }
     }
 
-    static async updateUserInfo (req:Request, res:Response) {
+    static async updateUserInfo(req: Request, res: Response) {
         const { id } = req.params;
         try {
             // checking if the id is given
@@ -78,13 +79,15 @@ export default class UserController{
                 res.status(400).send("a valid user id is required");
                 return;
             }
-            let profile = req.file?.filename  || 'defaultProfile.png'; 
-            let { username, email, password, role} = req.body
+            const uploadResult = await cloudinary.uploader.upload(req.file?.path!);
+            let profile = uploadResult.secure_url || "defaultProfile";
+
+            let { username, email, password, role } = req.body
             if (password) {
                 password = await bcrypt.hash(password, 12);
             }
             const theUser: IUser = { username, email, password, role, profile };
-    
+
             // updating the user if the id is valid and 
             const updatedUser = await UserService.findUserByIdAndUpdate(id, theUser);
             if (!updatedUser) {
@@ -98,7 +101,7 @@ export default class UserController{
         }
     }
 
-    static async deleteUserInfo(req:Request, res:Response){
+    static async deleteUserInfo(req: Request, res: Response) {
         const { id } = req.params;
         try {
             // checking if the id is given
@@ -113,7 +116,7 @@ export default class UserController{
                 return;
             }
             res.status(200).send({ message: "User had been deleted successfully", data: deletedUser });
-    
+
         } catch (e) {
             console.log(e)
             res.status(500).send("Internal server error")
