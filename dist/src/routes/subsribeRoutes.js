@@ -17,7 +17,7 @@ const subscriber_1 = require("../models/subscriber");
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const admin_1 = __importDefault(require("../middlewares/admin"));
 const router = (0, express_1.Router)();
-router.get('/subscribers', [auth_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/', [auth_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const subscribers = yield subscriber_1.Subscriber.find();
         res.status(200).send(subscribers);
@@ -26,7 +26,7 @@ router.get('/subscribers', [auth_1.default, admin_1.default], (req, res) => __aw
         res.status(500).json({ message: err.message });
     }
 }));
-router.post('/subscribers', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.body;
         // Check if the email already exists
@@ -45,7 +45,7 @@ router.post('/subscribers', (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 }));
 // Route to delete a subscriber by ID
-router.delete('/subscribers/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const subscriber = yield subscriber_1.Subscriber.findById(req.params.id);
         if (subscriber == null) {
@@ -59,7 +59,7 @@ router.delete('/subscribers/:id', (req, res) => __awaiter(void 0, void 0, void 0
     }
 }));
 // Route to update the status of a subscriber by ID
-router.patch('/subscribers/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.patch('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const subscriber = yield subscriber_1.Subscriber.findById(req.params.id);
         if (subscriber == null) {

@@ -37,7 +37,7 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/messages', messageRoutes);
-app.use("api/subscribe", subsribeRoutes);
+app.use("/api/subscribers", subsribeRoutes);
 app.use("/api/docs", swaggerui.serve, swaggerui.setup(swaggerdocs))
 app.use('/uploads', express.static('uploads'));
 

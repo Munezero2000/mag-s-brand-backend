@@ -5,7 +5,7 @@ import admin from "../middlewares/admin";
 
 const router = Router();
 
-router.get('/subscribers', [auth, admin], async (req: Request, res: Response) => {
+router.get('/', [auth, admin], async (req: Request, res: Response) => {
     try {
         const subscribers = await Subscriber.find();
         res.status(200).send(subscribers);
@@ -13,7 +13,7 @@ router.get('/subscribers', [auth, admin], async (req: Request, res: Response) =>
         res.status(500).json({ message: err.message });
     }
 });
-router.post('/subscribers', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const { email } = req.body;
 
@@ -34,7 +34,7 @@ router.post('/subscribers', async (req, res) => {
     }
 });
 // Route to delete a subscriber by ID
-router.delete('/subscribers/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const subscriber = await Subscriber.findById(req.params.id);
         if (subscriber == null) {
@@ -48,7 +48,7 @@ router.delete('/subscribers/:id', async (req, res) => {
 });
 
 // Route to update the status of a subscriber by ID
-router.patch('/subscribers/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
         const subscriber = await Subscriber.findById(req.params.id);
         if (subscriber == null) {

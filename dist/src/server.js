@@ -53,7 +53,7 @@ app.use('/api/blogs', blogRoutes_1.default);
 app.use('/api/auth', authRoutes_1.default);
 app.use('/api/comments', commentRoutes_1.default);
 app.use('/api/messages', messgeRoutes_1.default);
-app.use("api/subscribe", subsribeRoutes_1.default);
+app.use("/api/subscribers", subsribeRoutes_1.default);
 app.use("/api/docs", swaggerui.serve, swaggerui.setup(swaggerdocs_1.default));
 app.use('/uploads', express_1.default.static('uploads'));
 mongoose_1.default.connect(mongo_url).then(() => {
