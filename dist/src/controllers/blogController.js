@@ -99,6 +99,29 @@ class BlogController {
             }
         });
     }
+    static updateBlogLikes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            try {
+                if (!id) {
+                    res.status(400).send("A blog ID is required");
+                    return;
+                }
+                const { likes } = req.body;
+                const updatedBlog = { likes };
+                const updatedBlogResult = yield blogServices_1.default.updateBlogById(id, updatedBlog);
+                if (!updatedBlogResult) {
+                    res.status(404).send("Blog not found");
+                    return;
+                }
+                res.status(200).send(updatedBlogResult);
+            }
+            catch (e) {
+                console.log(e);
+                res.status(500).send("Internal server error");
+            }
+        });
+    }
     static deleteBlog(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
