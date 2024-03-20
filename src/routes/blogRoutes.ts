@@ -16,6 +16,7 @@ router.get('/:id', BlogController.getBlog)
 router.post("/", [auth, admin, upload.single("thumbnail")], BlogController.createBlog);
 
 router.put('/:id', [auth, admin,  upload.single("thumbnail")], BlogController.updateBlog)
+router.put('/:id/likes', [auth], BlogController.updateBlogLikes);
 
 // a route to delete blogs
 router.delete('/:id', [auth, admin], BlogController.deleteBlog)

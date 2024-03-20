@@ -85,6 +85,30 @@ export default class BlogController {
         }
     }
 
+    static async updateBlogLikes(req: Request, res: Response) {
+        const { id } = req.params;
+        try {
+            if (!id) {
+                res.status(400).send("A blog ID is required");
+                return;
+            }
+    
+            const { likes } = req.body; 
+            const updatedBlog = { likes }; 
+    
+            const updatedBlogResult = await BlogService.updateBlogById(id, updatedBlog);
+            if (!updatedBlogResult) {
+                res.status(404).send("Blog not found");
+                return;
+            }
+            res.status(200).send(updatedBlogResult);
+        } catch (e) {
+            console.log(e)
+            res.status(500).send("Internal server error")
+        }
+    }
+    
+
     static async deleteBlog(req: Request, res: Response) {
         const { id } = req.params;
         try {

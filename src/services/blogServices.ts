@@ -1,3 +1,4 @@
+import { UpdateQuery } from "mongoose";
 import { IBlog, Blog } from "../models/blog";
 
 export default class BlogService {
@@ -45,7 +46,7 @@ export default class BlogService {
     }
 
     // Method to update a blog post by ID
-    static async updateBlogById(id: string, updatedBlog: IBlog) {
+    static async updateBlogById(id: string, updatedBlog: IBlog | UpdateQuery<IBlog> | undefined) {
         try {
             const blog = await Blog.findByIdAndUpdate(id, updatedBlog, { new: true });
             return blog;
