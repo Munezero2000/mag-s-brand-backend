@@ -20,10 +20,28 @@ const router = (0, express_1.Router)();
 router.get('/subscribers', [auth_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const subscribers = yield subscriber_1.Subscriber.find();
-        res.json(subscribers);
+        res.status(200).send(subscribers);
     }
     catch (err) {
         res.status(500).json({ message: err.message });
+    }
+}));
+router.post('/subscribers', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.body;
+        // Check if the email already exists
+        const existingSubscriber = yield subscriber_1.Subscriber.findOne({ email });
+        if (existingSubscriber) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+        // Create a new subscriber
+        const newSubscriber = new subscriber_1.Subscriber({ email });
+        yield newSubscriber.save();
+        res.status(201).json(newSubscriber);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
     }
 }));
 // Route to delete a subscriber by ID
