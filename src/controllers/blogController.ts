@@ -67,12 +67,24 @@ export default class BlogController {
                 return;
             }
          
-            const uploadResult = await cloudinary.uploader.upload(req.file?.path!);
-            let thumbnail = uploadResult.secure_url || "default";
+            let thumbnail; 
             
-            const { title, content, author, category, status,  } = req.body;
+            if (req.file && req.file.path) {
+                const uploadResult = await cloudinary.uploader.upload(req.file.path);
+                thumbnail = uploadResult.secure_url;
+            } else {
+                const existingBlog = await BlogService.getBlogById(id);
+                if (existingBlog) {
+                    thumbnail = existingBlog.thumbnail;
+                } else {
+                    res.status(404).send("Blog not found");
+                    return;
+                }
+            }
+            
+            const { title, content, author, category, status } = req.body;
             const updatedBlog: IBlog = { title, content, author, category, status, thumbnail };
-
+    
             const updatedBlogResult = await BlogService.updateBlogById(id, updatedBlog);
             if (!updatedBlogResult) {
                 res.status(404).send("Blog not found");
@@ -84,6 +96,7 @@ export default class BlogController {
             res.status(500).send("Internal server error")
         }
     }
+    
 
     static async updateBlogLikes(req: Request, res: Response) {
         const { id } = req.params;

@@ -74,7 +74,6 @@ class BlogController {
         });
     }
     static updateBlog(req, res) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             try {
@@ -82,9 +81,22 @@ class BlogController {
                     res.status(400).send("A blog ID is required");
                     return;
                 }
-                const uploadResult = yield cloudinary_config_1.default.uploader.upload((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
-                let thumbnail = uploadResult.secure_url || "default";
-                const { title, content, author, category, status, } = req.body;
+                let thumbnail;
+                if (req.file && req.file.path) {
+                    const uploadResult = yield cloudinary_config_1.default.uploader.upload(req.file.path);
+                    thumbnail = uploadResult.secure_url;
+                }
+                else {
+                    const existingBlog = yield blogServices_1.default.getBlogById(id);
+                    if (existingBlog) {
+                        thumbnail = existingBlog.thumbnail;
+                    }
+                    else {
+                        res.status(404).send("Blog not found");
+                        return;
+                    }
+                }
+                const { title, content, author, category, status } = req.body;
                 const updatedBlog = { title, content, author, category, status, thumbnail };
                 const updatedBlogResult = yield blogServices_1.default.updateBlogById(id, updatedBlog);
                 if (!updatedBlogResult) {
