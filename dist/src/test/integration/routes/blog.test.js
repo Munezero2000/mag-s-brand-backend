@@ -17,7 +17,7 @@ const blog_1 = require("../../../models/blog");
 const user_1 = require("../../../models/user");
 let server;
 let token;
-describe("/api/blog", () => {
+describe("/api/blogs", () => {
     beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
         server = require('../../../server');
         const user = new user_1.User({ username: "Munezero", email: "munezero@gmail.com", password: "Mune@123", role: "admin" });

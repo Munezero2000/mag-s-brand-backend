@@ -82,11 +82,6 @@ class BlogController {
                     res.status(400).send("A blog ID is required");
                     return;
                 }
-                const { error } = (0, blog_1.validateBlogObject)(req.body);
-                if (error) {
-                    res.status(400).send(error.details[0].message);
-                    return;
-                }
                 const uploadResult = yield cloudinary_config_1.default.uploader.upload((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
                 let thumbnail = uploadResult.secure_url || "default";
                 const { title, content, author, category, status, } = req.body;

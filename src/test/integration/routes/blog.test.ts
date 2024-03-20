@@ -5,12 +5,12 @@ import { User, generateAuthToken } from '../../../models/user';
 
 let server: any;
 let token:any;
-describe("/api/blog", () => {
+describe("/api/blogs", () => {
     beforeEach(async() => {
         server = require('../../../server');
         const user = new User({ username: "Munezero", email: "munezero@gmail.com", password: "Mune@123", role: "admin" });
         await user.save();
-         token= generateAuthToken(user._id);
+        token= generateAuthToken(user._id);
         
       });
     

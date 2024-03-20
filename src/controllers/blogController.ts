@@ -66,12 +66,7 @@ export default class BlogController {
                 res.status(400).send("A blog ID is required");
                 return;
             }
-            const { error } = validateBlogObject(req.body);
-            if (error) {
-                res.status(400).send(error.details[0].message);
-                return;
-            }
-            
+         
             const uploadResult = await cloudinary.uploader.upload(req.file?.path!);
             let thumbnail = uploadResult.secure_url || "default";
             
